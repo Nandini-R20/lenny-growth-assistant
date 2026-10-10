@@ -1,0 +1,20 @@
+# Day 1: only the database. Backend runs locally in a venv for fast iteration.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: lenny-db
+    environment:
+      POSTGRES_USER: lenny
+      POSTGRES_PASSWORD: lenny
+      POSTGRES_DB: lenny
+    ports:
+      - "5433:5432"   # 5433 on host so it never clashes with a local Postgres on 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lenny -d lenny"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  pgdata:
