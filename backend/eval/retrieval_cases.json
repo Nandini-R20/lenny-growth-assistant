@@ -1,0 +1,24 @@
+{
+  "note": "Questions with the episode slugs that should appear in the top-k results. 'expect' = any of these counts as a hit. 'none' cases must return nothing above the similarity threshold.",
+  "cases": [
+    {"q": "What does Melanie Perkins say about starting Canva?", "expect": ["melanie-perkins"]},
+    {"q": "What does Brian Chesky say about running Airbnb?", "expect": ["brian-chesky"]},
+    {"q": "What did Stewart Butterfield learn building Slack?", "expect": ["stewart-butterfield"]},
+    {"q": "What does Marty Cagan say about empowered product teams?", "expect": ["marty-cagan"]},
+    {"q": "How does Teresa Torres describe continuous discovery?", "expect": ["teresa-torres"]},
+    {"q": "What does Geoffrey Moore say about crossing the chasm?", "expect": ["geoffrey-moore"]},
+    {"q": "What does Karri Saarinen say about building Linear with craft?", "expect": ["karri-saarinen"]},
+    {"q": "What does Dylan Field say about Figma?", "expect": ["dylan-field"]},
+    {"q": "What does Jason Fried say about running a calm company?", "expect": ["jason-fried"]},
+    {"q": "What does Sarah Tavel say about the hierarchy of engagement?", "expect": ["sarah-tavel"]},
+    {"q": "How do you find product-market fit?", "expect": ["todd-jackson", "elena-verna-40", "karri-saarinen", "marty-cagan", "geoffrey-moore"]},
+    {"q": "How do you hire a head of growth?", "expect": ["adam-fishman", "hila-qu", "melissa-tan", "casey-winters"]},
+    {"q": "How do marketplaces get liquidity?", "expect": ["ramesh-johari", "sarah-tavel"]},
+    {"q": "How should a team do product discovery with customers?", "expect": ["teresa-torres", "marty-cagan"]},
+    {"q": "How do you evaluate and build AI products?", "expect": ["chip-huyen", "aishwarya-naresh-reganti-kiriti-badam", "kevin-weil", "guillermo-rauch", "fei-fei"]},
+    {"q": "How do you run a job search with a support group?", "expect": ["phyl-terry"]},
+    {"q": "What is the best pizza topping?", "none": true},
+    {"q": "Who won the cricket world cup?", "none": true},
+    {"q": "How do I fix a car engine?", "none": true}
+  ]
+}

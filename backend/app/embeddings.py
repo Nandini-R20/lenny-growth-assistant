@@ -18,7 +18,7 @@ def embed(texts: list[str], kind: str = "document") -> list[list[float]]:
         r = httpx.post(
             f"{settings.ollama_base_url}/api/embed",
             json={"model": settings.embed_model, "input": [prefix + t for t in texts]},
-            timeout=600,
+            timeout=120,
         )
         r.raise_for_status()
     except httpx.ConnectError as e:

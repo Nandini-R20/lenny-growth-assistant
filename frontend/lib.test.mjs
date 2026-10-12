@@ -1,0 +1,15 @@
+import { renderMarkdown, parseSSE, esc, fmtTs } from "./lib.js";
+let ok = 0; const t = (n, c) => { if (!c) { console.log("FAIL", n); process.exitCode = 1; } else ok++; };
+const x = renderMarkdown('# Hi <img src=x onerror=alert(1)>\n\n**bold** and `<script>` [a](javascript:evil) [b](https://ok.com) [1][2] [9]\n\n- one [1]\n- two\n\n| a | b |\n|---|---|\n| 1 | <b>2</b> |\n\n```\n<script>x</script>\n```', { sources: 2 });
+t("no raw img", !/<img/i.test(x)); t("no raw script", !/<script/i.test(x)); t("js url blocked", !/href="javascript/i.test(x));
+t("ok link", x.includes('href="https://ok.com"')); t("cite chips", (x.match(/class="cite"/g) || []).length === 3 && x.includes('data-n="2"'));
+t("out-of-range cite stays text", x.includes("[9]")); t("table", x.includes("<table>") && x.includes("&lt;b&gt;2")); t("h1", x.includes("<h1>")); t("code fenced escaped", x.includes("&lt;script&gt;x"));
+const a = parseSSE('event: token\ndata: {"text":"he'); t("partial held", a.events.length === 0);
+const b = parseSSE(a.rest + 'llo"}\n\n: keep-alive\n\nevent: done\ndata: {"ok":1}\n\nevent: tok'); t("two events", b.events.length === 2 && b.events[0].data.text === "hello" && b.events[1].event === "done" && b.rest.startsWith("event: tok"));
+t("ts", fmtTs("00:11:32") === "11:32" && fmtTs("01:02:03") === "1:02:03");
+const only = renderMarkdown("Real answer [1].\n\n[3] [2] [4].", { sources: 4 });
+t("citation-only paragraph hidden", only.includes("Real answer") && !only.includes('data-n="3"'));
+t("citation-only kept when no sources known", renderMarkdown("[3]", { sources: 0 }).includes("[3]"));
+const tk = renderMarkdown("- [ ] Define the role [1]\n- [x] Done thing", { sources: 2 });
+t("task list", tk.includes('class="tasks"') && tk.includes('class="chk"') && tk.includes("\u2611") && tk.includes('data-n="1"') && !tk.includes("[ ]"));
+console.log("lib tests passed:", ok);

@@ -56,6 +56,29 @@ def init_schema() -> None:
         run(conn, "CREATE INDEX IF NOT EXISTS chunks_embedding_idx "
                   "ON chunks USING hnsw (embedding vector_cosine_ops)")
         run(conn, "CREATE INDEX IF NOT EXISTS chunks_episode_idx ON chunks(episode_slug)")
+        run(conn, """
+            CREATE TABLE IF NOT EXISTS sessions (
+                id         TEXT PRIMARY KEY,
+                title      TEXT NOT NULL DEFAULT 'New chat',
+                user_meta  JSONB NOT NULL DEFAULT '{}'::jsonb,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+            )""")
+        run(conn, """
+            CREATE TABLE IF NOT EXISTS messages (
+                id         BIGSERIAL PRIMARY KEY,
+                session_id TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+                role       TEXT NOT NULL CHECK (role IN ('user','assistant')),
+                content    TEXT NOT NULL,
+                route      TEXT,
+                provider   TEXT,
+                model      TEXT,
+                sources    JSONB NOT NULL DEFAULT '[]'::jsonb,
+                artifact   JSONB,
+                latency_ms INT,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+            )""")
+        run(conn, "CREATE INDEX IF NOT EXISTS messages_session_idx ON messages(session_id, id)")
     finally:
         conn.close()
     log.info("schema ready")
