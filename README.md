@@ -116,3 +116,7 @@ Essays (about 1,250 words) take several minutes on a local CPU model; use Cloud 
 
 - `python -m app.seed export` writes the current index (episodes, chunks, vectors) to `seed/index.jsonl.gz`; the app imports it automatically on first start when the database is empty. The file is only valid for the embedding model it was built with.
 - `python -m app.eval --write` measures retrieval (hit@k, MRR, rejection of off-topic questions) over `backend/eval/retrieval_cases.json` and writes `docs/eval-results.md`.
+
+## Demo video
+
+https://www.youtube.com/watch?v=SslEEG6c9p0
